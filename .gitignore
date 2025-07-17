@@ -1,3 +1,7 @@
+#vs code workspace config
+.clinerules
+.github
+.roo
 # Logs
 logs
 *.log
