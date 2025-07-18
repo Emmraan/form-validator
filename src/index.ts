@@ -22,15 +22,25 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(bodyParser.json());
 
-app.get("/", (req, res) => {
+app.get("/", (_req, res) => {
   res.status(200).json({
     message: "Service is running!",
   });
 });
 
+app.get("/health", async (_req, res) => {
+  const redisStatus = redisCache.isRedisConnected() ? 'connected' : 'fallback';
+  res.status(200).json({
+    status: "healthy",
+    timestamp: new Date().toISOString(),
+    redis: redisStatus,
+    runtime: process.env.RUNTIME || 'development'
+  });
+});
+
 app.use("/api", validateRoute);
 
-module.exports = app;
+export default app;
 
 // Graceful shutdown handler
 const gracefulShutdown = async (signal: string) => {

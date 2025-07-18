@@ -11,7 +11,8 @@
     "dev": "nodemon --watch src --ext ts --exec ts-node src/index.ts",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "postinstall": "pnpm run build"
   },
   "keywords": [
     "nodejs",

@@ -1,3 +1,11 @@
 src/
 tsconfig.json
+tsconfig.build.json
 *.ts
+*.md
+.env.example
+jest.config.js
+Dockerfile
+REDIS_SETUP.md
+node_modules/.cache
+.git/
