@@ -2,10 +2,11 @@ src/
 tsconfig.json
 tsconfig.build.json
 *.ts
-*.md
+README.md
+REDIS_SETUP.md
 .env.example
 jest.config.js
 Dockerfile
-REDIS_SETUP.md
 node_modules/.cache
 .git/
+!dist/
