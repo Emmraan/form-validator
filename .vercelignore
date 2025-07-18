@@ -1,6 +1,4 @@
 src/
-tsconfig.json
-tsconfig.build.json
 *.ts
 README.md
 REDIS_SETUP.md
