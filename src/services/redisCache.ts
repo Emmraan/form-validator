@@ -32,7 +32,8 @@ class RedisCache {
   private async initializeClient() {
     console.log('Redis initialization - Environment check:');
     console.log('REDIS_URL exists:', !!process.env.REDIS_URL);
-    console.log('REDIS_URL value:', process.env.REDIS_URL ? '[REDACTED]' : 'undefined');
+    console.log('REDIS_URL length:', process.env.REDIS_URL?.length || 0);
+    console.log('REDIS_URL starts with:', process.env.REDIS_URL?.substring(0, 10) || 'undefined');
 
     if (!process.env.REDIS_URL) {
       console.log('No REDIS_URL provided, using in-memory cache only');
@@ -42,12 +43,14 @@ class RedisCache {
     }
 
     try {
-      // Create ioredis client from URL
+      console.log('Attempting to create Redis client...');
       this.client = new Redis(process.env.REDIS_URL, {
         connectTimeout: 10000,
         lazyConnect: true,
-        maxRetriesPerRequest: 3,
+        maxRetriesPerRequest: 2,
+        enableReadyCheck: false,
       });
+      console.log('Redis client created, setting up event listeners...');
 
       // Set up event listeners
       this.client.on('error', (err) => {
@@ -70,14 +73,19 @@ class RedisCache {
       });
 
       // Connect and test
+      console.log('Attempting to connect to Redis...');
       await this.client.connect();
+      console.log('Redis connected, testing with ping...');
       const pingResult = await this.client.ping();
       console.log('✅ Redis connection verified with ping:', pingResult);
       this.isConnected = true;
 
     } catch (error) {
       const errorMessage = (error as Error).message;
-      console.log(`Redis connection failed: ${errorMessage}`);
+      const errorStack = (error as Error).stack;
+      console.error('❌ Redis connection failed:');
+      console.error('Error message:', errorMessage);
+      console.error('Error stack:', errorStack);
       console.log('Using in-memory cache as fallback');
       this.client = null;
       this.isConnected = false;
@@ -168,7 +176,7 @@ class RedisCache {
     if (this.client) {
       try {
         if (this.isConnected) {
-          await this.client.disconnect();
+          this.client.disconnect();
         }
         this.client = null;
         this.isConnected = false;

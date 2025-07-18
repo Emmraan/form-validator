@@ -16,19 +16,31 @@ if (process.env.RUNTIME === "vercel") {
   console.log('RUNTIME:', process.env.RUNTIME);
   console.log('REDIS_URL exists:', !!process.env.REDIS_URL);
   console.log('REDIS_URL length:', process.env.REDIS_URL?.length || 0);
+  console.log('REDIS_URL starts with:', process.env.REDIS_URL?.substring(0, 10) || 'undefined');
 }
 
 // Initialize Redis cache after environment variables are loaded
 const initializeRedis = async () => {
   try {
+    console.log('Starting Redis initialization...');
     await redisCache.initialize();
+    console.log('Redis initialization completed');
   } catch (error) {
-    console.warn('Redis initialization failed:', (error as Error).message);
+    console.error('❌ Redis initialization failed:', (error as Error).message);
+    console.error('Redis initialization error stack:', (error as Error).stack);
   }
 };
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+// Initialize Redis immediately in Vercel environment
+if (process.env.RUNTIME === "vercel") {
+  console.log('Vercel environment detected, initializing Redis immediately...');
+  initializeRedis().catch(err => {
+    console.error('Failed to initialize Redis in Vercel:', err);
+  });
+}
 
 app.use(cors());
 app.use(bodyParser.json());
