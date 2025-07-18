@@ -30,6 +30,10 @@ class RedisCache {
   }
 
   private async initializeClient() {
+    console.log('Redis initialization - Environment check:');
+    console.log('REDIS_URL exists:', !!process.env.REDIS_URL);
+    console.log('REDIS_URL value:', process.env.REDIS_URL ? '[REDACTED]' : 'undefined');
+
     if (!process.env.REDIS_URL) {
       console.log('No REDIS_URL provided, using in-memory cache only');
       this.client = null;

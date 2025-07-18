@@ -1,11 +1,22 @@
-import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import validateRoute from "./routes/validate.route";
 import redisCache from "./services/redisCache";
 
-dotenv.config();
+// Only use dotenv in non-Vercel environments
+if (process.env.RUNTIME !== "vercel") {
+  const dotenv = require("dotenv");
+  dotenv.config();
+}
+
+// Debug environment variables in Vercel
+if (process.env.RUNTIME === "vercel") {
+  console.log('Vercel Environment Debug:');
+  console.log('RUNTIME:', process.env.RUNTIME);
+  console.log('REDIS_URL exists:', !!process.env.REDIS_URL);
+  console.log('REDIS_URL length:', process.env.REDIS_URL?.length || 0);
+}
 
 // Initialize Redis cache after environment variables are loaded
 const initializeRedis = async () => {
