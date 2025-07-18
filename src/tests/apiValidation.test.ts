@@ -95,7 +95,7 @@ describe('End-to-End API Validation Tests', () => {
         .send(invalidSchema)
         .expect(400);
 
-      expect(response.body.error).toBe('Invalid schema type.');
+      expect(response.body.error).toBe("Invalid schema type. Use 'signup' or switch to dynamic validation.");
     });
 
     it('should return multiple validation errors for invalid firstname', async () => {

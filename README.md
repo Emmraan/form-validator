@@ -17,6 +17,13 @@
 
 ## ✨ Features
 
+### 🚀 **Dynamic Validation System** ⭐ NEW!
+- **Automatic Field Detection** - Intelligently detects field types (email, password, phone, etc.) without configuration
+- **Unlimited Field Support** - Validate any number of fields without code changes
+- **Custom Validation Rules** - Apply custom patterns, lengths, and logic per field via API requests
+- **Optional by Default** - All fields are optional unless explicitly marked as required
+- **Backward Compatible** - Existing implementations continue to work unchanged
+
 ### 🔒 **Comprehensive Validation**
 - **Email Domain Validation** - Advanced spam detection and domain reputation checking
 - **Password Security** - Intelligent password strength validation with security rules
@@ -87,7 +94,30 @@ curl -X POST http://localhost:3000/api/validate \
 
 **POST** `/api/validate`
 
-#### Request Format
+#### 🚀 Dynamic Validation (Recommended)
+```json
+{
+  "validationType": "dynamic",
+  "formData": {
+    "email": "user@example.com",
+    "first_name": "John",
+    "phone": "1234567890",
+    "age": "25"
+  },
+  "fieldRequirements": {
+    "email": { "required": true },
+    "first_name": { "required": true }
+  },
+  "customRules": {
+    "phone": {
+      "pattern": "^[0-9]{10}$",
+      "message": "Phone must be 10 digits"
+    }
+  }
+}
+```
+
+#### 🔄 Legacy Schema Format (Still Supported)
 ```json
 {
   "schemaType": "signup",
@@ -104,14 +134,25 @@ curl -X POST http://localhost:3000/api/validate \
 ```json
 {
   "success": boolean,
+  "data": {
+    "email": "user@example.com",
+    "first_name": "John"
+  },
   "errors": [
     {
       "path": ["field_name"],
       "message": "Error description"
     }
-  ]
+  ],
+  "fieldAnalysis": {
+    "email": "email",
+    "first_name": "firstName",
+    "phone": "phone"
+  }
 }
 ```
+
+> **Note**: `fieldAnalysis` is only included in dynamic validation responses to show detected field types.
 
 #### Example Responses
 
@@ -139,6 +180,131 @@ curl -X POST http://localhost:3000/api/validate \
   ]
 }
 ```
+
+---
+
+## 🎯 Dynamic Validation Examples
+
+### Basic Usage - Any Fields
+```bash
+curl -X POST http://localhost:3000/api/validate \
+  -H "Content-Type: application/json" \
+  -d '{
+    "validationType": "dynamic",
+    "formData": {
+      "user_email": "john@company.com",
+      "full_name": "John Doe",
+      "phone_number": "1234567890",
+      "website": "https://johndoe.dev"
+    }
+  }'
+```
+
+### Required Fields
+```bash
+curl -X POST http://localhost:3000/api/validate \
+  -H "Content-Type: application/json" \
+  -d '{
+    "validationType": "dynamic",
+    "formData": {
+      "email": "user@example.com",
+      "name": "",
+      "phone": "1234567890"
+    },
+    "fieldRequirements": {
+      "email": { "required": true },
+      "name": { "required": true },
+      "phone": { "required": false }
+    }
+  }'
+```
+
+### Custom Validation Rules
+```bash
+curl -X POST http://localhost:3000/api/validate \
+  -H "Content-Type: application/json" \
+  -d '{
+    "validationType": "dynamic",
+    "formData": {
+      "username": "johndoe123",
+      "bio": "Software developer",
+      "tags": "javascript,react,nodejs"
+    },
+    "customRules": {
+      "username": {
+        "minLength": 3,
+        "maxLength": 20,
+        "pattern": "^[a-zA-Z0-9_]+$",
+        "message": "Username must be 3-20 chars, letters/numbers/underscore only"
+      },
+      "bio": {
+        "maxLength": 500
+      },
+      "tags": {
+        "minItems": 1,
+        "maxItems": 10
+      }
+    }
+  }'
+```
+
+### Supported Field Types
+The system automatically detects and validates these field types:
+
+| Field Names | Type Detected | Validation Applied |
+|-------------|---------------|-------------------|
+| `email`, `user_email`, `contact_email` | Email | Email format + domain validation |
+| `password`, `pass`, `confirm_password` | Password | Complexity requirements |
+| `first_name`, `last_name`, `full_name` | Name | Character validation, length limits |
+| `phone`, `mobile`, `phone_number` | Phone | Phone number format |
+| `username`, `user_name`, `login` | Username | Alphanumeric + underscore |
+| `age`, `years_old` | Age | Numeric, 13-120 range |
+| `url`, `website`, `homepage` | URL | URL format validation |
+| `address`, `street_address` | Address | Address format |
+| Any other field | Generic | Basic string validation |
+
+---
+
+## 🔄 Migration Guide
+
+### From Fixed Schema to Dynamic
+
+**Before (Limited to 4 fields):**
+```json
+{
+  "schemaType": "signup",
+  "formData": {
+    "firstname": "John",
+    "lastname": "Doe",
+    "email": "john@example.com",
+    "password": "SecurePass123!"
+  }
+}
+```
+
+**After (Unlimited fields):**
+```json
+{
+  "validationType": "dynamic",
+  "formData": {
+    "first_name": "John",
+    "last_name": "Doe",
+    "email": "john@example.com",
+    "password": "SecurePass123!",
+    "phone": "1234567890",
+    "company": "Tech Corp",
+    "website": "https://example.com"
+  },
+  "fieldRequirements": {
+    "first_name": { "required": true },
+    "last_name": { "required": true },
+    "email": { "required": true },
+    "password": { "required": true }
+  }
+}
+```
+
+> **📖 Full Documentation**: See [DYNAMIC_VALIDATION_GUIDE.md](./DYNAMIC_VALIDATION_GUIDE.md) for complete API reference and advanced examples.
 
 ---
 

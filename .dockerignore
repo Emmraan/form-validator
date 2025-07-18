@@ -1,0 +1,25 @@
+# Tests and config files
+**/*.test.ts
+**/*.spec.ts
+jest.config.js
+
+# Vercel
+.vercelignore
+vercel.json
+
+# Examples
+examples/
+*.md
+
+# Git / License
+.gitignore
+License
+
+# Output
+dist/
+logs/
+node_modules/
+
+# Dev config
+.env
+tsconfig.build.json

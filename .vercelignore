@@ -1,6 +1,4 @@
-README.md
-REDIS_SETUP.md
-VERCEL_DEPLOYMENT.md
+*.md
 .env.example
 jest.config.js
 Dockerfile
