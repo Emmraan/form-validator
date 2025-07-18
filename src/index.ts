@@ -30,7 +30,7 @@ app.get("/", (req, res) => {
 
 app.use("/api", validateRoute);
 
-export default app;
+module.exports = app;
 
 // Graceful shutdown handler
 const gracefulShutdown = async (signal: string) => {
