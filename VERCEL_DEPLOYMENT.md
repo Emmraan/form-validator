@@ -80,9 +80,10 @@ curl -X POST https://your-app.vercel.app/api/validate \
   -d '{
     "schemaType": "signup",
     "formData": {
+      "firstname": "Test",
+      "lastname": "User",
       "email": "test@example.com",
-      "password": "SecurePass123!",
-      "name": "Test User"
+      "password": "SecurePass123!"
     }
   }'
 ```
@@ -95,7 +96,7 @@ curl -X POST https://your-app.vercel.app/api/validate \
 3. **Function Timeout**: Ensure Redis connections are optimized
 
 ### Logs
-View deployment logs in Vercel dashboard under "Functions" tab.
+View deployment logs in Vercel dashboard under "Build Logs" tab.
 
 ## 📊 Performance Optimization
 

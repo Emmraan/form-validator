@@ -48,7 +48,7 @@
 
 ```bash
 # Clone the repository
-git clone <repository-url>
+git clone https://github.com/Emmraan/form-validator.git
 cd form-validator
 
 # Install dependencies
@@ -71,7 +71,8 @@ curl -X POST http://localhost:3000/api/validate \
   -d '{
     "schemaType": "signup",
     "formData": {
-      "name": "John Doe",
+      "firstname": "John",
+      "lastname": "Doe",
       "email": "john@example.com",
       "password": "SecurePassword123!"
     }
@@ -91,7 +92,8 @@ curl -X POST http://localhost:3000/api/validate \
 {
   "schemaType": "signup",
   "formData": {
-    "name": "string (min 2 chars)",
+    "firstname": "string (min 2 chars)",
+    "lastname": "string (min 2 chars)",
     "email": "string (valid email)",
     "password": "string (non-empty)"
   }
@@ -157,7 +159,7 @@ The service uses **ioredis** for maximum compatibility and reliability:
 
 ```bash
 # .env file
-REDIS_URL=rediss://default:your-token@your-host:6379
+REDIS_URL=rediss://username:your-token@your-host:6379
 ```
 
 ### Resilience Features
@@ -338,6 +340,17 @@ curl http://localhost:3000/
 # Response
 {
   "message": "Service is running!"
+}
+
+# For detailed health check including Redis status
+curl http://localhost:3000/health
+
+# Response
+{
+  "status": "healthy",
+  "timestamp": "2024-01-01T00:00:00.000Z",
+  "redis": "connected",
+  "runtime": "development"
 }
 ```
 

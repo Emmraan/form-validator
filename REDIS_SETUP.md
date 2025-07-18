@@ -80,7 +80,7 @@ Domain validation results are cached for **24 hours** by default.
 
 Run the included performance test:
 ```bash
-node test-cache-performance.js
+pnpm run test
 ```
 
 This will show:

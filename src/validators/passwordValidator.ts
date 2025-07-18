@@ -1,6 +1,7 @@
 export default function validatePassword(
   password: string,
-  fullName: string
+  firstname: string,
+  lastname: string
 ): string | null {
   const minLen = 10,
     maxLen = 20;
@@ -9,14 +10,15 @@ export default function validatePassword(
   const hasSpecial = /[^a-zA-Z0-9]/.test(password);
   const hasNumber = /[0-9]/.test(password);
 
-  const [firstName = "", lastName = ""] = fullName.toLowerCase().split(" ");
+  const firstName = firstname.toLowerCase();
+  const lastName = lastname.toLowerCase();
 
   const containsName =
     (firstName.length > 3 && password.toLowerCase().includes(firstName)) ||
     (lastName.length > 3 && password.toLowerCase().includes(lastName));
 
   if (password.length < minLen || password.length > maxLen)
-    return "Password must be 10–20 characters.";
+    return "Password must be 10-20 characters.";
   if (!hasUpper) return "Password must contain at least one uppercase.";
   if (!hasLower) return "Password must contain at least one lowercase.";
   if (!hasSpecial)

@@ -17,7 +17,7 @@ router.post("/validate", async (req, res) => {
     const errors: { path: string[]; message: string }[] = [];
 
     if (schemaType === "signup") {
-      const passErr = validatePassword(formData.password, formData.name);
+      const passErr = validatePassword(formData.password, formData.firstname, formData.lastname);
       if (passErr) errors.push({ path: ["password"], message: passErr });
 
       const [username, domain] = formData.email.split("@");
