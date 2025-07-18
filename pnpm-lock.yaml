@@ -17,9 +17,6 @@ importers:
       cors:
         specifier: ^2.8.5
         version: 2.8.5
-      dotenv:
-        specifier: ^17.2.0
-        version: 17.2.0
       express:
         specifier: ^5.1.0
         version: 5.1.0
@@ -42,9 +39,6 @@ importers:
       '@types/body-parser':
         specifier: ^1.19.6
         version: 1.19.6
-      '@types/cheerio':
-        specifier: ^1.0.0
-        version: 1.0.0
       '@types/cors':
         specifier: ^2.8.19
         version: 2.8.19
@@ -57,6 +51,9 @@ importers:
       '@types/node-fetch':
         specifier: ^2.6.12
         version: 2.6.12
+      dotenv:
+        specifier: ^17.2.0
+        version: 17.2.0
       jest:
         specifier: ^30.0.4
         version: 30.0.4(@types/node@24.0.14)(ts-node@10.9.2(@types/node@24.0.14)(typescript@5.8.3))
@@ -447,10 +444,6 @@ packages:
 
   '@types/body-parser@1.19.6':
     resolution: {integrity: sha512-HLFeCYgz89uk22N5Qg3dvGvsv46B8GLvKKo1zKG4NybA8U2DiEO3w9lqGg29t/tfLRJpJ6iQxnVw4OnB7MoM9g==}
-
-  '@types/cheerio@1.0.0':
-    resolution: {integrity: sha512-zAaImHWoh5RY2CLgU2mvg3bl2k3F65B0N5yphuII3ythFLPmJhL7sj1RDu6gSxcgqHlETbr/lhA2OBY+WF1fXQ==}
-    deprecated: This is a stub types definition. cheerio provides its own type definitions, so you do not need this installed.
 
   '@types/connect@3.4.38':
     resolution: {integrity: sha512-K6uROf1LD88uDQqJCktA4yzL1YYAK6NgfsI0v/mTgyPKWsX1CnJ0XPSDhViejru1GcRkLWb8RlzFYJRqGUbaug==}
@@ -2503,10 +2496,6 @@ snapshots:
     dependencies:
       '@types/connect': 3.4.38
       '@types/node': 24.0.14
-
-  '@types/cheerio@1.0.0':
-    dependencies:
-      cheerio: 1.1.0
 
   '@types/connect@3.4.38':
     dependencies:
