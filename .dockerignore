@@ -2,6 +2,7 @@
 **/*.test.ts
 **/*.spec.ts
 jest.config.js
+scripts/
 
 # Vercel
 .vercelignore

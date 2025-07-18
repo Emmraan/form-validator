@@ -1,3 +1,5 @@
+examples/
+scripts/
 *.md
 .env.example
 jest.config.js
