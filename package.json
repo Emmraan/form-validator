@@ -5,14 +5,15 @@
   "main": "dist/index.js",
   "scripts": {
     "tsc": "tsc -p tsconfig.build.json",
-    "build": "pnpm run tsc",
+    "build": "pnpm run clean && pnpm run tsc",
     "vercel-build": "pnpm run build",
     "start": "node dist/index.js",
     "dev": "nodemon --watch src --ext ts --exec ts-node src/index.ts",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "postinstall": "pnpm run build"
+    "postinstall": "pnpm run build",
+    "clean": "rm -rf dist"
   },
   "keywords": [
     "nodejs",

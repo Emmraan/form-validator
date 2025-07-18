@@ -1,10 +1,11 @@
-src/
-*.ts
 README.md
 REDIS_SETUP.md
+VERCEL_DEPLOYMENT.md
 .env.example
 jest.config.js
 Dockerfile
 node_modules/.cache
 .git/
-!dist/
+src/tests/
+**/*.test.ts
+**/*.spec.ts

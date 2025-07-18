@@ -4,13 +4,15 @@
     "outDir": "dist",
     "rootDir": "src",
     "noEmit": false,
-    "declaration": false
+    "declaration": false,
+    "removeComments": true,
+    "sourceMap": false
   },
-  "include": ["src"],
+  "include": ["src/**/*"],
   "exclude": [
     "**/*.test.ts",
     "**/*.spec.ts",
-    "src/tests",
+    "src/tests/**/*",
     "node_modules",
     "dist"
   ]

@@ -33,8 +33,9 @@ vercel --prod
 
 ### Build Process
 1. `pnpm install` - Install dependencies
-2. `pnpm run build` - Compile TypeScript
-3. Deploy `dist/` folder as serverless function
+2. `pnpm run build` - Clean previous build and compile TypeScript
+3. TypeScript compiles `src/` to `dist/` (excluding tests)
+4. Deploy `dist/` folder as serverless function via `api/index.js`
 
 ### API Endpoints
 - `GET /` - Service status
