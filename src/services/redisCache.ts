@@ -30,11 +30,6 @@ class RedisCache {
   }
 
   private async initializeClient() {
-    console.log('Redis initialization - Environment check:');
-    console.log('REDIS_URL exists:', !!process.env.REDIS_URL);
-    console.log('REDIS_URL length:', process.env.REDIS_URL?.length || 0);
-    console.log('REDIS_URL starts with:', process.env.REDIS_URL?.substring(0, 10) || 'undefined');
-
     if (!process.env.REDIS_URL) {
       console.log('No REDIS_URL provided, using in-memory cache only');
       this.client = null;
@@ -43,14 +38,12 @@ class RedisCache {
     }
 
     try {
-      console.log('Attempting to create Redis client...');
       this.client = new Redis(process.env.REDIS_URL, {
         connectTimeout: 10000,
         lazyConnect: true,
         maxRetriesPerRequest: 2,
         enableReadyCheck: false,
       });
-      console.log('Redis client created, setting up event listeners...');
 
       // Set up event listeners
       this.client.on('error', (err) => {
@@ -73,19 +66,14 @@ class RedisCache {
       });
 
       // Connect and test
-      console.log('Attempting to connect to Redis...');
       await this.client.connect();
-      console.log('Redis connected, testing with ping...');
       const pingResult = await this.client.ping();
       console.log('✅ Redis connection verified with ping:', pingResult);
       this.isConnected = true;
 
     } catch (error) {
       const errorMessage = (error as Error).message;
-      const errorStack = (error as Error).stack;
-      console.error('❌ Redis connection failed:');
-      console.error('Error message:', errorMessage);
-      console.error('Error stack:', errorStack);
+      console.warn('Redis connection failed:', errorMessage);
       console.log('Using in-memory cache as fallback');
       this.client = null;
       this.isConnected = false;
