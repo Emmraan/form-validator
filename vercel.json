@@ -4,7 +4,9 @@
   "buildCommand": "pnpm run build",
   "functions": {
     "api/index.js": {
-      "includeFiles": "dist/**"
+      "runtime": "nodejs18.x",
+      "includeFiles": "dist/**",
+      "maxDuration": 30
     }
   },
   "routes": [
@@ -13,5 +15,8 @@
       "dest": "/api/index.js"
     }
   ],
+  "env": {
+    "RUNTIME": "vercel"
+  },
   "cleanUrls": false
 }

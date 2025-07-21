@@ -1,11 +1,31 @@
+# Development files
 examples/
 scripts/
 *.md
 .env.example
+.env.vercel
 jest.config.js
 Dockerfile
+.dockerignore
+
+# Cache and temporary files
 node_modules/.cache
 .git/
+.vscode/
+.idea/
+
+# Test files
 src/tests/
 **/*.test.ts
 **/*.spec.ts
+
+# Source files (only dist/ is needed for deployment)
+src/
+tsconfig.json
+tsconfig.build.json
+
+# Logs and debug files
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
