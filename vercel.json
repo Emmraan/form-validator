@@ -1,25 +1,13 @@
 {
   "version": 2,
-  "installCommand": "pnpm install",
-  "buildCommand": "pnpm run build",
-  "functions": {
-    "api/index.js": {
-      "runtime": "nodejs18.x",
-      "includeFiles": "dist/**",
-      "maxDuration": 30
-    }
-  },
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/api/index.js"
+  "builds": [
+    { "src": "api/index.ts", 
+    "use": "@vercel/node" 
     }
   ],
-  "env": {
-    "RUNTIME": "vercel"
-  },
-  "cleanUrls": false,
-  "tracing": {
-    "enabled": true
-  }
+  "routes": [
+    { "src": "/(.*)", 
+    "dest": "api/index.ts" 
+    }
+  ]
 }
