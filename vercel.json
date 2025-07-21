@@ -5,7 +5,21 @@
   "functions": {
     "api/index.js": {
       "runtime": "nodejs18.x",
-      "includeFiles": "dist/**"
+      "includeFiles": "dist/**",
+      "maxDuration": 30
     }
+  },
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/api/index.js"
+    }
+  ],
+  "env": {
+    "RUNTIME": "vercel"
+  },
+  "cleanUrls": false,
+  "tracing": {
+    "enabled": true
   }
 }
