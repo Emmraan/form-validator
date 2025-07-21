@@ -1,4 +1,5 @@
 import https from "https";
+import { IncomingMessage } from "http";
 import { parse } from "node-html-parser";
 import redisCache from "../services/redisCache";
 
@@ -15,7 +16,7 @@ export default async function checkEmailDomain(domain: string): Promise<null | s
   const url = `https://${domain}`;
 
   return new Promise((resolve) => {
-    const req = https.get(url, (res) => {
+    const req = https.get(url, (res: IncomingMessage) => {
       const validStatusCodes = [200, 301, 302, 307, 308];
       if (!validStatusCodes.includes(res.statusCode || 0)) {
         redisCache.set(cacheKey, 'true', 86400).finally(() => {
@@ -25,7 +26,7 @@ export default async function checkEmailDomain(domain: string): Promise<null | s
       }
 
       let raw = "";
-      res.on("data", (chunk) => (raw += chunk));
+      res.on("data", (chunk: Buffer) => (raw += chunk.toString()));
       res.on("end", () => {
         const root = parse(raw);
         const title = root.querySelector("title")?.innerText.toLowerCase() || "";
