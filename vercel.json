@@ -4,7 +4,7 @@
   "buildCommand": "pnpm run build",
   "functions": {
     "api/index.js": {
-      "runtime": "@vercel/node",
+      "runtime": "nodejs18.x",
       "includeFiles": "dist/**"
     }
   }
