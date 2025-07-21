@@ -35,13 +35,13 @@ if (process.env.RUNTIME === "vercel") {
 app.use(cors());
 app.use(bodyParser.json());
 
-app.get("/", (_req, res) => {
+app.get("/", (_req: express.Request, res: express.Response) => {
   res.status(200).json({
     message: "Service is running!",
   });
 });
 
-app.get("/health", async (_req, res) => {
+app.get("/health", async (_req: express.Request, res: express.Response) => {
   const redisStatus = redisCache.isRedisConnected() ? 'connected' : 'fallback';
   res.status(200).json({
     status: "healthy",
