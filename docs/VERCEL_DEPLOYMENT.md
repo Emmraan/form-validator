@@ -106,8 +106,10 @@ View deployment logs in Vercel dashboard under "Build Logs" tab.
 - ✅ Lazy Redis connection initialization
 - ✅ In-memory cache fallback
 - ✅ Minimal dependencies in production build (development dependencies are excluded).
+- ✅ Configured `keepAliveTimeout` and `headersTimeout` for DDoS resilience.
 
 ### Monitoring
 - Use Vercel Analytics for performance insights
 - Monitor Redis connection status via `/health` endpoint
 - Set up alerts for function errors
+- Monitor rate limiting metrics (e.g., 429 responses) to identify potential abuse or DDoS attempts.

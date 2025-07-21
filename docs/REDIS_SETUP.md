@@ -1,6 +1,6 @@
 # Redis Caching Setup Guide
 
-This guide explains how to set up and use Redis caching with the form-validator service.
+This guide explains how to set up and use Redis with the form-validator service for both **caching** and **rate limiting**.
 
 Ensure the Form Validator service is running (e.g., `pnpm dev`) to utilize Redis caching.
 
@@ -67,6 +67,9 @@ Based on our testing:
 | First request | 299ms | 299ms | - |
 | Subsequent requests | 299ms | ~5ms | **98% faster** |
 
+### Rate Limiting Data
+Redis is also used to store rate limiting data, enabling efficient and accurate tracking of requests per IP address.
+
 ## 🔧 Configuration Options
 
 ### Cache TTL (Time To Live)
@@ -89,11 +92,16 @@ This will show:
 - Multiple rapid requests performance
 - Average response times
 
-## 🔍 Cache Key Format
+## 🔍 Key Formats
 
 Email domain cache keys follow this pattern:
 ```
 email_domain:{domain}
+```
+
+Rate limiting keys follow this pattern:
+```
+rate_limit:{ip_address}
 ```
 
 Examples:

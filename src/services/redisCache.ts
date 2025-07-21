@@ -1,10 +1,15 @@
-import Redis from 'ioredis';
+import Redis, { ChainableCommander } from 'ioredis';
 
 class RedisCache {
   private client: Redis | null = null;
   private isConnected = false;
   private fallbackCache: Record<string, { value: any; expiry: number }> = {};
   private initializationPromise: Promise<void> | null = null;
+
+  // Expose the underlying Redis client for advanced operations like pipelines
+  public getClient(): Redis | null {
+    return this.client;
+  }
 
   constructor() {
     // Don't initialize immediately - wait for explicit initialization
@@ -176,6 +181,23 @@ class RedisCache {
 
   isRedisConnected(): boolean {
     return this.isConnected;
+  }
+
+  // Method to execute a Redis pipeline
+  async executePipeline(operations: (pipeline: ChainableCommander) => void): Promise<any[] | null> {
+    await this.ensureInitialized();
+    if (this.client && this.isConnected) {
+      try {
+        const pipeline = this.client.pipeline();
+        operations(pipeline);
+        return await pipeline.exec();
+      } catch (error) {
+        console.warn('Redis pipeline execution error:', (error as Error).message);
+        return null;
+      }
+    }
+    console.warn('Redis client not connected, cannot execute pipeline.');
+    return null;
   }
 }
 

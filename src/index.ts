@@ -82,6 +82,10 @@ if (process.env.RUNTIME !== "vercel") {
     console.log(`📊 Redis cache status: ${redisCache.isRedisConnected() ? 'Connected and ready' : 'Using fallback in-memory cache'}`);
   });
 
+  // Set keep-alive timeout for DDoS mitigation
+  server.keepAliveTimeout = 61 * 1000;
+  server.headersTimeout = 65 * 1000;
+
   // Handle server shutdown
   const shutdown = async () => {
     console.log('\nShutting down server...');

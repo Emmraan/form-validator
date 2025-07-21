@@ -22,6 +22,7 @@
 - **Comprehensive Validation**: Email domain, password security, username analysis, disposable email detection.
 - **Performance & Reliability**: Redis caching with automatic fallback, sub-100ms response times.
 - **Developer Experience**: TypeScript-first, flexible configuration, comprehensive testing.
+- **Robust Security**: Integrated rate limiting and multi-layered DDoS mitigation.
 
 ---
 
@@ -44,6 +45,57 @@ curl -X POST http://localhost:3000/api/validate \
 ```
 
 For more details on API usage and authentication, refer to the [Dynamic Validation Guide](docs/DYNAMIC_VALIDATION_GUIDE.md).
+
+---
+
+## 🚦 Rate Limiting
+
+To ensure fair usage and protect against abuse, the Form Validator microservice implements **IP-based rate limiting** for all `POST` endpoints.
+
+- **Limit**: 100 requests per minute per IP address.
+- **Mechanism**: Utilizes a Sliding Window Counter algorithm, backed by Redis for efficient and accurate tracking.
+- **Response**: If the rate limit is exceeded, the API will respond with a `429 Too Many Requests` status code and a meaningful error message, including a `Retry-After` header indicating when the client can safely retry.
+
+**Example of a rate-limited response:**
+
+```json
+{
+  "success": false,
+  "errors": [
+    {
+      "path": ["TOO_MANY_REQUESTS"],
+      "message": "You have exceeded the request limit of 100 requests per minute. Please try again after X seconds."
+    }
+  ]
+}
+```
+
+---
+
+## 🛡️ DDoS Mitigation
+
+The service employs a multi-layered approach to mitigate Distributed Denial of Service (DDoS) attacks, ensuring high availability and resilience:
+
+1.  **Edge-level Protection (Vercel)**:
+    *   Leverages Vercel's inherent infrastructure, global CDN, and distributed architecture to absorb and filter common network and transport layer (Layer 3/4) DDoS attacks.
+    *   Traffic distribution helps prevent single points of failure.
+
+2.  **Application-level Rate Limiting**:
+    *   The IP-based rate limiting described above directly counters application-layer (Layer 7) DDoS attacks like HTTP floods by restricting excessive requests from individual IPs.
+
+3.  **Connection Management**:
+    *   Express server is configured with `keepAliveTimeout` and `headersTimeout` to prevent Slowloris-type attacks, ensuring that malicious connections cannot indefinitely tie up server resources.
+
+4.  **Robust Input Validation and Sanitization**:
+    *   All incoming data is rigorously validated using Zod schemas and the dynamic schema builder, preventing malformed requests from exploiting vulnerabilities or consuming excessive processing power.
+
+5.  **Resource Optimization**:
+    *   The serverless function architecture and efficient use of Redis caching minimize resource consumption, making the service more resilient to traffic spikes.
+
+6.  **Monitoring and Alerting**:
+    *   Integration with Vercel's logging and analytics, combined with custom alerts for unusual traffic patterns or error rates, enables rapid detection and response to potential attack vectors.
+
+These measures collectively provide a strong defense against various DDoS attack types, safeguarding the service's integrity and performance.
 
 ---
 

@@ -57,6 +57,7 @@ Test files are located in the `src/tests/` directory and follow the naming conve
 - [`fieldTypeDetector.test.ts`](src/tests/fieldTypeDetector.test.ts)
 - [`nameFieldValidation.test.ts`](src/tests/nameFieldValidation.test.ts)
 - [`passwordValidator.test.ts`](src/tests/passwordValidator.test.ts)
+- [`rateLimit.test.ts`](src/tests/rateLimit.test.ts)
 
 ## Adding New Tests
 
