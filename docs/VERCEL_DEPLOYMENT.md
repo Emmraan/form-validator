@@ -1,17 +1,17 @@
-# Vercel Deployment Guide - v2.1.0
+# Vercel Deployment Guide
 
 ## 🚀 Quick Deploy Your Own
 
 ### 1. Prerequisites
 - Vercel account
-- Redis instance (optional - Upstash recommended)
+- Redis instance (optional - Upstash recommended for seamless integration with Vercel)
 
 ### 2. Environment Variables
 Set these in your Vercel dashboard:
 
 ```bash
 REDIS_URL=rediss://username:password@host:port  # Optional
-RUNTIME=vercel
+RUNTIME=vercel # Specifies the deployment environment for Vercel-specific optimizations.
 ```
 
 ### 3. Deploy Commands
@@ -38,12 +38,12 @@ pnpm run verify:prod
 1. `pnpm install` - Install dependencies
 2. `pnpm run build` - Clean previous build and compile TypeScript
 3. TypeScript compiles `src/` to `dist/` (excluding tests)
-4. Deploy `dist/` folder as serverless function via `api/index.js`
+4. Deploy compiled `dist/api/index.js` as a serverless function.
 
 ### API Endpoints
-- `GET /` - Service status
-- `GET /health` - Health check with Redis status
-- `POST /api/validate` - Form validation endpoint
+- `GET /` - Returns service status.
+- `GET /health` - Health check with Redis status.
+- `POST /api/validate` - Form validation endpoint.
 
 ## 🔴 Redis Setup for Vercel
 
@@ -81,12 +81,11 @@ Expected response:
 curl -X POST https://your-app.vercel.app/api/validate \
   -H "Content-Type: application/json" \
   -d '{
-    "schemaType": "signup",
+    "validationType": "dynamic",
     "formData": {
-      "firstname": "Test",
-      "lastname": "User",
       "email": "test@example.com",
-      "password": "SecurePass123!"
+      "first_name": "Test",
+      "last_name": "User"
     }
   }'
 ```
@@ -106,7 +105,7 @@ View deployment logs in Vercel dashboard under "Build Logs" tab.
 ### Cold Start Optimization
 - ✅ Lazy Redis connection initialization
 - ✅ In-memory cache fallback
-- ✅ Minimal dependencies in production build
+- ✅ Minimal dependencies in production build (development dependencies are excluded).
 
 ### Monitoring
 - Use Vercel Analytics for performance insights

@@ -7,7 +7,7 @@ The Form Validator now includes a powerful **Dynamic Validation System** that ca
 ## Key Features
 
 ✅ **Automatic Field Type Detection** - Recognizes common field patterns (email, password, phone, etc.)  
-✅ **Optional by Default** - All fields are optional unless explicitly marked as required  
+✅ **Optional by Default** - Fields are optional unless explicitly marked as required
 ✅ **Custom Validation Rules** - Apply custom patterns, lengths, and logic per field  
 ✅ **Backward Compatible** - Existing `schemaType: "signup"` continues to work  
 ✅ **Scalable** - Add new forms without modifying the API  
@@ -87,9 +87,26 @@ The system automatically detects field types based on field names:
 | **Age** | `age`, `years_old` | Numeric, 13-120 range |
 | **URL** | `url`, `website`, `homepage` | URL format validation |
 | **Address** | `address`, `street`, `street_address` | Address format |
-| **Generic** | Any other field | Basic string validation |
+| **Generic** | Any other field | Basic string validation (e.g., non-empty, trimmed) |
 
 ## API Reference
+
+### API Authentication
+(See [README.md](README.md) for more details on API authentication.)
+
+All API requests to `/api/validate` require authentication. Include a valid API key in the `Authorization` header as a Bearer token.
+
+```bash
+curl -X POST http://localhost:3000/api/validate \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -d '{
+    "validationType": "dynamic",
+    "formData": {
+      "email": "user@example.com"
+    }
+  }'
+```
 
 ### Request Format
 
@@ -119,7 +136,7 @@ interface CustomValidationRule {
   // String validation
   minLength?: number;
   maxLength?: number;
-  pattern?: string;            // Regex pattern
+  pattern?: string;            // Regular Expression pattern
   contains?: string;           // Must contain this text
   startsWith?: string;         // Must start with this text
   endsWith?: string;           // Must end with this text
@@ -134,7 +151,7 @@ interface CustomValidationRule {
   
   // Conditional validation
   dependsOn?: string;          // Field name this depends on
-  dependsOnValue?: any;        // Required value of dependent field
+  dependsOnValue?: string | number | boolean;        // Required value of dependent field
   
   // General
   required?: boolean;          // Override required status
@@ -219,6 +236,8 @@ interface CustomValidationRule {
 ```
 
 ## Migration Guide
+
+This section illustrates how to transition from the older fixed schema approach to the new dynamic validation system.
 
 ### From Fixed Schema to Dynamic
 
@@ -307,6 +326,6 @@ The system provides detailed error messages for validation failures:
 ## Performance
 
 - **Field Type Detection**: O(1) pattern matching per field
-- **Validation**: Efficient Zod schema compilation and validation
+- **Validation**: Efficient Zod schema compilation and validation for rapid processing.
 - **Caching**: Redis caching for email domain validation
 - **Memory**: Minimal overhead for dynamic schema generation

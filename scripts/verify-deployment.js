@@ -9,6 +9,9 @@
 
 const https = require('https');
 const http = require('http');
+require('dotenv').config();
+
+const AUTH_TOKEN = process.env.AUTH_TOKEN;
 
 // Configuration
 const LOCAL_URL = 'http://localhost:3000';
@@ -26,6 +29,7 @@ function makeRequest(url, options = {}) {
       method: options.method || 'GET',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${AUTH_TOKEN}`,
         ...options.headers
       }
     }, (res) => {

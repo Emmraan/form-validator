@@ -1,5 +1,10 @@
 import request from 'supertest';
 import app from '../index';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const AUTH_TOKEN = process.env.AUTH_TOKEN || 'GuhHU7Shu#77y7wygdwgv';
 
 describe('Dynamic Validation System', () => {
   describe('Field Type Detection', () => {
@@ -14,6 +19,7 @@ describe('Dynamic Validation System', () => {
 
       const response = await request(app)
         .post('/api/validate')
+        .set('Authorization', `Bearer ${AUTH_TOKEN}`)
         .send(formData)
         .expect(200);
 
@@ -33,6 +39,7 @@ describe('Dynamic Validation System', () => {
 
       const response = await request(app)
         .post('/api/validate')
+        .set('Authorization', `Bearer ${AUTH_TOKEN}`)
         .send(formData)
         .expect(200);
 
@@ -53,6 +60,7 @@ describe('Dynamic Validation System', () => {
 
       const response = await request(app)
         .post('/api/validate')
+        .set('Authorization', `Bearer ${AUTH_TOKEN}`)
         .send(formData)
         .expect(200);
 
@@ -73,6 +81,7 @@ describe('Dynamic Validation System', () => {
 
       const response = await request(app)
         .post('/api/validate')
+        .set('Authorization', `Bearer ${AUTH_TOKEN}`)
         .send(formData)
         .expect(200);
 
@@ -93,6 +102,7 @@ describe('Dynamic Validation System', () => {
 
       const response = await request(app)
         .post('/api/validate')
+        .set('Authorization', `Bearer ${AUTH_TOKEN}`)
         .send(formData)
         .expect(200);
 
@@ -114,6 +124,7 @@ describe('Dynamic Validation System', () => {
 
       const response = await request(app)
         .post('/api/validate')
+        .set('Authorization', `Bearer ${AUTH_TOKEN}`)
         .send(formData)
         .expect(422);
 
@@ -143,6 +154,7 @@ describe('Dynamic Validation System', () => {
 
       const response = await request(app)
         .post('/api/validate')
+        .set('Authorization', `Bearer ${AUTH_TOKEN}`)
         .send(formData)
         .expect(422);
 
@@ -169,6 +181,7 @@ describe('Dynamic Validation System', () => {
 
       const response = await request(app)
         .post('/api/validate')
+        .set('Authorization', `Bearer ${AUTH_TOKEN}`)
         .send(formData)
         .expect(422);
 
@@ -196,6 +209,7 @@ describe('Dynamic Validation System', () => {
 
       const response = await request(app)
         .post('/api/validate')
+        .set('Authorization', `Bearer ${AUTH_TOKEN}`)
         .send(formData)
         .expect(200);
 
@@ -232,6 +246,7 @@ describe('Dynamic Validation System', () => {
 
       const response = await request(app)
         .post('/api/validate')
+        .set('Authorization', `Bearer ${AUTH_TOKEN}`)
         .send(formData)
         .expect(200);
 
@@ -262,6 +277,7 @@ describe('Dynamic Validation System', () => {
 
       const response = await request(app)
         .post('/api/validate')
+        .set('Authorization', `Bearer ${AUTH_TOKEN}`)
         .send(formData)
         .expect(200);
 
@@ -288,6 +304,7 @@ describe('Dynamic Validation System', () => {
 
       const response = await request(app)
         .post('/api/validate')
+        .set('Authorization', `Bearer ${AUTH_TOKEN}`)
         .send(formData)
         .expect(200);
 
@@ -299,6 +316,7 @@ describe('Dynamic Validation System', () => {
     it('should return error for missing formData', async () => {
       const response = await request(app)
         .post('/api/validate')
+        .set('Authorization', `Bearer ${AUTH_TOKEN}`)
         .send({ validationType: 'dynamic' })
         .expect(400);
 
@@ -309,7 +327,8 @@ describe('Dynamic Validation System', () => {
     it('should return error for invalid validationType', async () => {
       const response = await request(app)
         .post('/api/validate')
-        .send({ 
+        .set('Authorization', `Bearer ${AUTH_TOKEN}`)
+        .send({
           validationType: 'invalid',
           formData: { test: 'value' }
         })

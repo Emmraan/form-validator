@@ -2,6 +2,8 @@
 
 This guide explains how to set up and use Redis caching with the form-validator service.
 
+Ensure the Form Validator service is running (e.g., `pnpm dev`) to utilize Redis caching.
+
 ## 🚀 Quick Start
 
 ### Without Redis (Default)
@@ -46,7 +48,7 @@ Output: `No REDIS_URL provided, using in-memory cache only`
 REDIS_URL=redis://username:password@redis-host:port
 ```
 
-### AWS ElastiCache
+### AWS ElastiCache (Redis engine)
 ```bash
 REDIS_URL=redis://your-cluster.cache.amazonaws.com:6379
 ```
@@ -64,12 +66,11 @@ Based on our testing:
 |----------|---------------|------------|-------------|
 | First request | 299ms | 299ms | - |
 | Subsequent requests | 299ms | ~5ms | **98% faster** |
-| Speed increase | - | - | **50x faster** |
 
 ## 🔧 Configuration Options
 
 ### Cache TTL (Time To Live)
-Domain validation results are cached for **24 hours** by default.
+Domain validation results are cached for **24 hours** by default. This duration can be configured via the `REDIS_CACHE_TTL_HOURS` environment variable.
 
 ### Fallback Behavior
 - ✅ **Redis available**: Uses Redis for persistent caching
@@ -123,6 +124,8 @@ The service logs cache status on startup:
 - `Redis connection failed, using in-memory cache as fallback` - Fallback due to error
 
 ## 🔒 Security Considerations
+
+For production environments, it is critical to implement the following security measures:
 
 1. **Use authentication** for production Redis instances
 2. **Enable TLS** for Redis connections in production

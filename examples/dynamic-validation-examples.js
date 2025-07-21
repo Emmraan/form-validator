@@ -4,8 +4,9 @@
  * This file demonstrates how to use the new dynamic validation system
  * with various field types and validation rules.
  */
-
+require('dotenv').config();
 const API_BASE_URL = 'http://localhost:3000/api';
+const AUTH_TOKEN = process.env.AUTH_TOKEN;
 
 // Example 1: Basic Dynamic Validation
 async function basicDynamicValidation() {
@@ -13,7 +14,10 @@ async function basicDynamicValidation() {
   
   const response = await fetch(`${API_BASE_URL}/validate`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${AUTH_TOKEN}`
+    },
     body: JSON.stringify({
       validationType: 'dynamic',
       formData: {
@@ -38,7 +42,10 @@ async function requiredFieldsValidation() {
   
   const response = await fetch(`${API_BASE_URL}/validate`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${AUTH_TOKEN}`
+    },
     body: JSON.stringify({
       validationType: 'dynamic',
       formData: {
@@ -65,7 +72,10 @@ async function customValidationRules() {
   
   const response = await fetch(`${API_BASE_URL}/validate`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${AUTH_TOKEN}`
+    },
     body: JSON.stringify({
       validationType: 'dynamic',
       formData: {
@@ -102,7 +112,10 @@ async function complexFormValidation() {
   
   const response = await fetch(`${API_BASE_URL}/validate`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${AUTH_TOKEN}`
+    },
     body: JSON.stringify({
       validationType: 'dynamic',
       formData: {
@@ -150,7 +163,10 @@ async function legacySchemaValidation() {
   
   const response = await fetch(`${API_BASE_URL}/validate`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${AUTH_TOKEN}`
+    },
     body: JSON.stringify({
       schemaType: 'signup',
       formData: {
@@ -173,7 +189,10 @@ async function errorHandlingExample() {
   
   const response = await fetch(`${API_BASE_URL}/validate`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${AUTH_TOKEN}`
+    },
     body: JSON.stringify({
       validationType: 'dynamic',
       formData: {

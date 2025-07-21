@@ -8,7 +8,7 @@
 ![License](https://img.shields.io/badge/License-MIT-yellow.svg)
 ![Vercel](https://img.shields.io/badge/Deployed-Vercel-black.svg)
 
-**A revolutionary, production-ready microservice for dynamic form validation with unlimited fields, intelligent field detection, and zero-maintenance scaling.**
+**A robust, production-ready microservice for dynamic form validation, featuring unlimited fields, intelligent field type detection, and scalable architecture.**
 
 🚀 **[Live Demo](https://form-validator-rho.vercel.app)**
 
@@ -18,10 +18,32 @@
 
 ## ✨ Features
 
-- **Dynamic Validation System**: Unlimited fields, smart field detection, custom rules engine.
+- **Dynamic Validation System**: Unlimited fields, intelligent field type detection (e.g., email, password), and a custom rules engine.
 - **Comprehensive Validation**: Email domain, password security, username analysis, disposable email detection.
 - **Performance & Reliability**: Redis caching with automatic fallback, sub-100ms response times.
 - **Developer Experience**: TypeScript-first, flexible configuration, comprehensive testing.
+
+---
+
+## 🔒 API Authentication
+
+All API endpoints, especially `/api/validate`, require authentication. This ensures the security and integrity of your validation processes. A valid API key must be provided in the `Authorization` header as a Bearer token.
+
+**Example:**
+
+```bash
+curl -X POST http://localhost:3000/api/validate \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -d '{
+    "validationType": "dynamic",
+    "formData": {
+      "email": "test@example.com"
+    }
+  }'
+```
+
+For more details on API usage and authentication, refer to the [Dynamic Validation Guide](docs/DYNAMIC_VALIDATION_GUIDE.md).
 
 ---
 
@@ -31,6 +53,7 @@
 - Node.js 18+
 - pnpm (recommended) or npm
 - Redis instance (optional)
+- `pnpm` (recommended, install with `npm install -g pnpm` if not already installed)
 
 ### Installation
 
@@ -67,7 +90,7 @@ For comprehensive documentation, including detailed API reference, dynamic valid
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see the [CONTRIBUTING.md](CONTRIBUTING.md) (if available) or the documentation in `docs/` for guidelines.
+We welcome contributions! Please see the [CONTRIBUTING.md](CONTRIBUTING.md) or the documentation in `docs/` for guidelines.
 
 ---
 

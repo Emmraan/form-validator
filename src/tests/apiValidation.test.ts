@@ -2,6 +2,11 @@ import request from 'supertest';
 import express from 'express';
 import bodyParser from 'body-parser';
 import validateRoute from '../routes/validate.route';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const AUTH_TOKEN = process.env.AUTH_TOKEN || 'GuhHU7Shu#77y7wygdwgv';
 
 // Create test app
 const app = express();
@@ -9,6 +14,69 @@ app.use(bodyParser.json());
 app.use('/api', validateRoute);
 
 describe('End-to-End API Validation Tests', () => {
+  describe('Authentication Tests', () => {
+    it('should reject request without authentication token', async () => {
+      const validFormData = {
+        schemaType: 'signup',
+        formData: {
+          firstname: 'John',
+          lastname: 'Doe',
+          email: 'john.doe@gmail.com',
+          password: 'SecurePass123!'
+        }
+      };
+
+      const response = await request(app)
+        .post('/api/validate')
+        .send(validFormData)
+        .expect(401);
+
+      expect(response.body.success).toBe(false);
+      expect(response.body.error).toBe('Authentication token required.');
+    });
+
+    it('should reject request with invalid authentication token', async () => {
+      const validFormData = {
+        schemaType: 'signup',
+        formData: {
+          firstname: 'John',
+          lastname: 'Doe',
+          email: 'john.doe@gmail.com',
+          password: 'SecurePass123!'
+        }
+      };
+
+      const response = await request(app)
+        .post('/api/validate')
+        .set('Authorization', 'Bearer invalid_token')
+        .send(validFormData)
+        .expect(403);
+
+      expect(response.body.success).toBe(false);
+      expect(response.body.error).toBe('Invalid authentication token.');
+    });
+
+    it('should allow request with valid authentication token', async () => {
+      const validFormData = {
+        schemaType: 'signup',
+        formData: {
+          firstname: 'John',
+          lastname: 'Doe',
+          email: 'john.doe@gmail.com',
+          password: 'SecurePass123!'
+        }
+      };
+
+      const response = await request(app)
+        .post('/api/validate')
+        .set('Authorization', `Bearer ${AUTH_TOKEN}`)
+        .send(validFormData)
+        .expect(200);
+
+      expect(response.body.success).toBe(true);
+    });
+  });
+
   describe('Successful Validation Cases', () => {
     it('should successfully validate a complete valid signup form', async () => {
       const validFormData = {
@@ -23,6 +91,7 @@ describe('End-to-End API Validation Tests', () => {
 
       const response = await request(app)
         .post('/api/validate')
+        .set('Authorization', `Bearer ${AUTH_TOKEN}`)
         .send(validFormData)
         .expect(200);
 
@@ -41,18 +110,19 @@ describe('End-to-End API Validation Tests', () => {
         formData: {
           firstname: "O'Connor",
           lastname: 'Martinez-Lopez',
-          email: 'oconnor@gmail.com',  // Use gmail.com to avoid domain validation delays
+          email: 'oconnor@gmail.com',
           password: 'ValidPassword1!'
         }
       };
 
       const response = await request(app)
         .post('/api/validate')
+        .set('Authorization', `Bearer ${AUTH_TOKEN}`)
         .send(validFormData)
         .expect(200);
 
       expect(response.body.success).toBe(true);
-    }, 10000);  // Increase timeout to 10 seconds
+    }, 10000);
 
     it('should trim whitespace from all fields', async () => {
       const formDataWithWhitespace = {
@@ -67,6 +137,7 @@ describe('End-to-End API Validation Tests', () => {
 
       const response = await request(app)
         .post('/api/validate')
+        .set('Authorization', `Bearer ${AUTH_TOKEN}`)
         .send(formDataWithWhitespace)
         .expect(200);
 
@@ -92,6 +163,7 @@ describe('End-to-End API Validation Tests', () => {
 
       const response = await request(app)
         .post('/api/validate')
+        .set('Authorization', `Bearer ${AUTH_TOKEN}`)
         .send(invalidSchema)
         .expect(400);
 
@@ -111,6 +183,7 @@ describe('End-to-End API Validation Tests', () => {
 
       const response = await request(app)
         .post('/api/validate')
+        .set('Authorization', `Bearer ${AUTH_TOKEN}`)
         .send(invalidFormData)
         .expect(422);
 
@@ -134,6 +207,7 @@ describe('End-to-End API Validation Tests', () => {
 
       const response = await request(app)
         .post('/api/validate')
+        .set('Authorization', `Bearer ${AUTH_TOKEN}`)
         .send(invalidFormData)
         .expect(422);
 
@@ -158,6 +232,7 @@ describe('End-to-End API Validation Tests', () => {
 
       const response = await request(app)
         .post('/api/validate')
+        .set('Authorization', `Bearer ${AUTH_TOKEN}`)
         .send(invalidFormData)
         .expect(422);
 
@@ -181,6 +256,7 @@ describe('End-to-End API Validation Tests', () => {
 
       const response = await request(app)
         .post('/api/validate')
+        .set('Authorization', `Bearer ${AUTH_TOKEN}`)
         .send(invalidFormData)
         .expect(422);
 
@@ -206,6 +282,7 @@ describe('End-to-End API Validation Tests', () => {
 
       const response = await request(app)
         .post('/api/validate')
+        .set('Authorization', `Bearer ${AUTH_TOKEN}`)
         .send(invalidFormData)
         .expect(422);
 
@@ -229,6 +306,7 @@ describe('End-to-End API Validation Tests', () => {
 
       const response = await request(app)
         .post('/api/validate')
+        .set('Authorization', `Bearer ${AUTH_TOKEN}`)
         .send(invalidFormData)
         .expect(422);
 
@@ -252,6 +330,7 @@ describe('End-to-End API Validation Tests', () => {
 
       const response = await request(app)
         .post('/api/validate')
+        .set('Authorization', `Bearer ${AUTH_TOKEN}`)
         .send(invalidFormData)
         .expect(422);
 
@@ -268,27 +347,26 @@ describe('End-to-End API Validation Tests', () => {
       const invalidFormData = {
         schemaType: 'signup',
         formData: {
-          firstname: 'A',  // Too short
-          lastname: 'B',   // Too short
-          email: 'invalid-email',  // Invalid format
-          password: 'ValidPassword123!'  // Valid password to avoid schema validation failure
+          firstname: 'A',
+          lastname: 'B',
+          email: 'invalid-email',
+          password: 'ValidPassword123!'
         }
       };
 
       const response = await request(app)
         .post('/api/validate')
+        .set('Authorization', `Bearer ${AUTH_TOKEN}`)
         .send(invalidFormData)
         .expect(422);
 
       expect(response.body.success).toBe(false);
       expect(response.body.errors.length).toBeGreaterThan(1);
 
-      // Check that we get errors for multiple fields (schema validation errors only)
       const errorPaths = response.body.errors.map((error: any) => error.path[0]);
       expect(errorPaths).toContain('firstname');
       expect(errorPaths).toContain('lastname');
       expect(errorPaths).toContain('email');
-      // Password validation won't run because schema validation fails first
     });
 
     it('should return both schema and password validation errors when schema passes', async () => {
@@ -298,19 +376,19 @@ describe('End-to-End API Validation Tests', () => {
           firstname: 'John',
           lastname: 'Smith',
           email: 'john@example.com',
-          password: 'MyJohnPassword1!'  // Contains firstname - will fail password validation
+          password: 'MyJohnPassword1!'
         }
       };
 
       const response = await request(app)
         .post('/api/validate')
+        .set('Authorization', `Bearer ${AUTH_TOKEN}`)
         .send(invalidFormData)
         .expect(422);
 
       expect(response.body.success).toBe(false);
       expect(response.body.errors.length).toBeGreaterThanOrEqual(1);
 
-      // Should get password validation error
       const errorPaths = response.body.errors.map((error: any) => error.path[0]);
       expect(errorPaths).toContain('password');
     });
@@ -329,6 +407,7 @@ describe('End-to-End API Validation Tests', () => {
 
       const response = await request(app)
         .post('/api/validate')
+        .set('Authorization', `Bearer ${AUTH_TOKEN}`)
         .send(invalidFormData)
         .expect(422);
 
@@ -347,6 +426,7 @@ describe('End-to-End API Validation Tests', () => {
 
       const response = await request(app)
         .post('/api/validate')
+        .set('Authorization', `Bearer ${AUTH_TOKEN}`)
         .send(invalidFormData)
         .expect(422);
 

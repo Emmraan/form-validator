@@ -1,6 +1,6 @@
 {
   "name": "form-validator",
-  "version": "2.1.0",
+  "version": "2.2.1",
   "description": "A customizable microservice for form validation.",
   "main": "dist/index.js",
   "scripts": {
@@ -13,7 +13,8 @@
     "test:coverage": "jest --coverage",
     "clean": "rimraf dist",
     "verify": "node scripts/verify-deployment.js",
-    "verify:prod": "node scripts/verify-deployment.js"
+    "verify:prod": "node scripts/verify-deployment.js",
+    "example": "node examples/dynamic-validation-examples.js"
   },
   "keywords": [
     "nodejs",
