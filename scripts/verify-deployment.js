@@ -231,7 +231,7 @@ async function main() {
     }
   } else {
     console.log('\n⚠️  Production URL not provided. Usage:');
-    console.log('   node scripts/verify-deployment.js https://your-app.vercel.app');
+    console.log('   node scripts/verify-deployment.js https://form-validator-rho.vercel.app');
   }
   
   // Final summary

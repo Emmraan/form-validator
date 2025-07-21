@@ -13,7 +13,7 @@
     "test:coverage": "jest --coverage",
     "clean": "rimraf dist",
     "verify": "node scripts/verify-deployment.js",
-    "verify:prod": "node scripts/verify-deployment.js https://your-app.vercel.app"
+    "verify:prod": "node scripts/verify-deployment.js"
   },
   "keywords": [
     "nodejs",

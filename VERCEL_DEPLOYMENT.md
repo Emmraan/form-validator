@@ -1,6 +1,6 @@
-# Vercel Deployment Guide
+# Vercel Deployment Guide - v2.1.0
 
-## 🚀 Quick Deploy
+## 🚀 Quick Deploy Your Own
 
 ### 1. Prerequisites
 - Vercel account
@@ -10,8 +10,8 @@
 Set these in your Vercel dashboard:
 
 ```bash
-RUNTIME=vercel
 REDIS_URL=rediss://username:password@host:port  # Optional
+RUNTIME=vercel
 ```
 
 ### 3. Deploy Commands
@@ -21,6 +21,9 @@ npm i -g vercel
 
 # Deploy to production
 vercel --prod
+
+# Verify deployment
+pnpm run verify:prod
 ```
 
 ## 🔧 Configuration Details
