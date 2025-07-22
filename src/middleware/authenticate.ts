@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const AUTH_TOKEN = process.env.AUTH_TOKEN || 'GuhHU7Shu#77y7wygdwgv';
+const AUTH_TOKEN = process.env.AUTH_TOKEN;
 
 export const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers['authorization'];

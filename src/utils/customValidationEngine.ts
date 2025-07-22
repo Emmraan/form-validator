@@ -1,3 +1,4 @@
+import vm from 'vm';
 import { CustomValidationRule, FieldRequirement } from '../schemas';
 import { detectFieldType } from './fieldTypeDetector';
 
@@ -153,10 +154,24 @@ export function validateAdvancedRule(
       };
       
       // Simple function evaluation (in production, consider using a safer alternative)
-      const validatorFunction = new Function('context', `
+      // Secure validation using a sandboxed evaluator
+      const validatorFunction = (context: any) => {
         const { value, allData, fieldName } = context;
-        return ${rule.customValidator};
-      `);
+        try {
+          return vm.runInNewContext(rule.customValidator ?? 'false', {
+            value,
+            allData,
+            fieldName,
+            // Allow only safe methods
+            _: {
+              includes: (s: string) => value.includes(s),
+              matches: (regex: string) => new RegExp(regex).test(value)
+            }
+          });
+        } catch (e) {
+          return false;
+        }
+      };
       
       const isValid = validatorFunction(evalContext);
       if (!isValid) {

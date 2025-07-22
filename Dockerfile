@@ -20,7 +20,6 @@ WORKDIR /app
 # Copy built code from builder stage
 COPY --from=builder /app/dist ./dist
 COPY package.json pnpm-lock.yaml ./
-COPY .env ./
 
 # Install prod dependencies
 RUN npm install -g pnpm && pnpm install --prod --frozen-lockfile

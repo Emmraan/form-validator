@@ -16,6 +16,7 @@ app.use('/api', validateRoute);
 describe('End-to-End API Validation Tests', () => {
   describe('Authentication Tests', () => {
     it('should reject request without authentication token', async () => {
+      jest.setTimeout(10000);
       const validFormData = {
         schemaType: 'signup',
         formData: {

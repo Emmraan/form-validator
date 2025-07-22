@@ -3,7 +3,7 @@ import redisCache from '../services/redisCache';
 import { buildErrorResponse } from '../utils/responseBuilder';
 import { ChainableCommander } from 'ioredis';
 
-const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 minute
+const RATE_LIMIT_WINDOW_MS = 60 * 1000;
 const MAX_REQUESTS_PER_WINDOW = 100;
 
 export const rateLimitMiddleware = async (req: Request, res: Response, next: NextFunction) => {
@@ -22,7 +22,6 @@ export const rateLimitMiddleware = async (req: Request, res: Response, next: Nex
   const key = `rate_limit:${ip}`;
 
   try {
-    // Use a Redis pipeline for atomic operations
     const results = await redisCache.executePipeline((pipeline: ChainableCommander) => {
       pipeline.zadd(key, now.toString(), now.toString());
       pipeline.zremrangebyscore(key, '-inf', windowStart.toString());
@@ -34,7 +33,7 @@ export const rateLimitMiddleware = async (req: Request, res: Response, next: Nex
       throw new Error('Redis pipeline execution failed or returned null.');
     }
 
-    const currentRequestCount = results[2][1] as number; // Assuming results[2][1] is the count
+    const currentRequestCount = results[2][1] as number;
 
     if (currentRequestCount > MAX_REQUESTS_PER_WINDOW) {
       const retryAfterSeconds = Math.ceil((windowStart + RATE_LIMIT_WINDOW_MS - now) / 1000);

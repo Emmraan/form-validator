@@ -1,26 +1,31 @@
-# Tests and config files
-**/*.test.ts
-**/*.spec.ts
-jest.config.js
-scripts/
-
-# Vercel
-.vercelignore
-vercel.json
-
-# Examples
-examples/
-*.md
-
-# Git / License
-.gitignore
-License
-
-# Output
+# Node modules and build output
+node_modules/
 dist/
 logs/
-node_modules/
 
-# Dev config
+# Test files
+**/*.test.ts
+**/*.spec.ts
+
+# Local development config
 .env
+.env.*          # env.local, env.production, etc.
+
+# Tooling / scripts
+scripts/
+jest.config.js
 tsconfig.build.json
+
+# Documentation and examples
+*.md
+docs/
+examples/
+
+# Vercel config
+.vercelignore
+vercel.json
+api/
+# Git and other meta files
+.git/
+.gitignore
+LICENSE

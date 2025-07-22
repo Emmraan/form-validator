@@ -154,14 +154,13 @@ class RedisCache {
 
   private cleanupFallbackCache() {
     const now = Date.now();
-    const keys = Object.keys(this.fallbackCache);
-    
-    if (keys.length > 100) {
-      keys.forEach(key => {
+    // Iterate through all keys and remove expired items proactively
+    for (const key in this.fallbackCache) {
+      if (Object.prototype.hasOwnProperty.call(this.fallbackCache, key)) {
         if (this.fallbackCache[key].expiry <= now) {
           delete this.fallbackCache[key];
         }
-      });
+      }
     }
   }
 
